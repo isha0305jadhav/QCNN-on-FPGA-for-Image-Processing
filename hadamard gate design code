@@ -1,0 +1,356 @@
+import qiskit.tools.jupyter
+%qiskit_version_table
+%qiskit_copyright
+---------------------------------------------------------------------------
+ModuleNotFoundError                       Traceback (most recent call last)
+<ipython-input-1-9849f423b75d> in <cell line: 0>()
+----> 1 import qiskit.tools.jupyter
+      2 get_ipython().run_line_magic('qiskit_version_table', '')
+      3 get_ipython().run_line_magic('qiskit_copyright', '')
+
+ModuleNotFoundError: No module named 'qiskit'
+
+---------------------------------------------------------------------------
+NOTE: If your import is failing due to a missing package, you can
+manually install dependencies using either !pip or !apt.
+
+To view examples of installing some common dependencies, click the
+"Open Examples" button below.
+---------------------------------------------------------------------------
+!pip install qutip -q
+!pip install qiskit -q
+!pip install qiskit[visualization] -q
+!pip install git+https://github.com/qiskit-community/qiskit-textbook.git#subdirectory=qiskit-textbook-src -q
+
+import numpy as np
+np.set_printoptions(precision=3, suppress=True)
+import qutip as qt
+from matplotlib import pyplot as plt
+%matplotlib inline
+
+import pandas as pd
+import sklearn as sk
+import qiskit as qk
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 30.1/30.1 MB 65.6 MB/s eta 0:00:00
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.5/6.5 MB 74.3 MB/s eta 0:00:00
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 58.5 MB/s eta 0:00:00
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.5/49.5 kB 3.6 MB/s eta 0:00:00
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.7/49.7 MB 16.9 MB/s eta 0:00:00
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 109.0/109.0 kB 7.9 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.6/162.6 kB 5.4 MB/s eta 0:00:00
+  Preparing metadata (setup.py) ... done
+  Building wheel for pylatexenc (setup.py) ... done
+  Preparing metadata (setup.py) ... done
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 24.9 MB/s eta 0:00:00
+  Building wheel for qiskit-textbook (setup.py) ... done
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import SparsePauliOp
+from qiskit.transpiler import generate_preset_pass_manager
+from qiskit_ibm_runtime import EstimatorV2 as Estimator
+
+# Create a new circuit with two qubits
+qc = QuantumCircuit(2)
+
+# Add a Hadamard gate to qubit 0
+qc.h(0)
+
+# Perform a controlled-X gate on qubit 1, controlled by qubit 0
+qc.cx(0, 1)
+
+# Return a drawing of the circuit using MatPlotLib ("mpl").
+# These guides are written by using Jupyter notebooks, which
+# display the output of the last line of each cell.
+# If you're running this in a script, use `print(qc.draw())` to
+# print a text drawing.
+qc.draw("mpl")
+---------------------------------------------------------------------------
+ModuleNotFoundError                       Traceback (most recent call last)
+<ipython-input-3-8b3191a41f1f> in <cell line: 0>()
+      2 from qiskit.quantum_info import SparsePauliOp
+      3 from qiskit.transpiler import generate_preset_pass_manager
+----> 4 from qiskit_ibm_runtime import EstimatorV2 as Estimator
+      5 
+      6 # Create a new circuit with two qubits
+
+ModuleNotFoundError: No module named 'qiskit_ibm_runtime'
+
+---------------------------------------------------------------------------
+NOTE: If your import is failing due to a missing package, you can
+manually install dependencies using either !pip or !apt.
+
+To view examples of installing some common dependencies, click the
+"Open Examples" button below.
+---------------------------------------------------------------------------
+pip install qiskit_ibm_runtime
+Collecting qiskit_ibm_runtime
+  Downloading qiskit_ibm_runtime-0.39.0-py3-none-any.whl.metadata (21 kB)
+Requirement already satisfied: requests>=2.19 in /usr/local/lib/python3.11/dist-packages (from qiskit_ibm_runtime) (2.32.3)
+Collecting requests-ntlm>=1.1.0 (from qiskit_ibm_runtime)
+  Downloading requests_ntlm-1.3.0-py3-none-any.whl.metadata (2.4 kB)
+Requirement already satisfied: numpy>=1.13 in /usr/local/lib/python3.11/dist-packages (from qiskit_ibm_runtime) (2.0.2)
+Requirement already satisfied: urllib3>=1.21.1 in /usr/local/lib/python3.11/dist-packages (from qiskit_ibm_runtime) (2.4.0)
+Requirement already satisfied: python-dateutil>=2.8.0 in /usr/local/lib/python3.11/dist-packages (from qiskit_ibm_runtime) (2.9.0.post0)
+Collecting ibm-platform-services>=0.22.6 (from qiskit_ibm_runtime)
+  Downloading ibm_platform_services-0.66.0-py3-none-any.whl.metadata (9.0 kB)
+Requirement already satisfied: pydantic>=2.5.0 in /usr/local/lib/python3.11/dist-packages (from qiskit_ibm_runtime) (2.11.4)
+Requirement already satisfied: qiskit>=1.4.1 in /usr/local/lib/python3.11/dist-packages (from qiskit_ibm_runtime) (2.0.1)
+Requirement already satisfied: packaging in /usr/local/lib/python3.11/dist-packages (from qiskit_ibm_runtime) (24.2)
+Collecting ibm_cloud_sdk_core<4.0.0,>=3.22.1 (from ibm-platform-services>=0.22.6->qiskit_ibm_runtime)
+  Downloading ibm_cloud_sdk_core-3.23.0-py3-none-any.whl.metadata (8.7 kB)
+Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.11/dist-packages (from pydantic>=2.5.0->qiskit_ibm_runtime) (0.7.0)
+Requirement already satisfied: pydantic-core==2.33.2 in /usr/local/lib/python3.11/dist-packages (from pydantic>=2.5.0->qiskit_ibm_runtime) (2.33.2)
+Requirement already satisfied: typing-extensions>=4.12.2 in /usr/local/lib/python3.11/dist-packages (from pydantic>=2.5.0->qiskit_ibm_runtime) (4.13.2)
+Requirement already satisfied: typing-inspection>=0.4.0 in /usr/local/lib/python3.11/dist-packages (from pydantic>=2.5.0->qiskit_ibm_runtime) (0.4.0)
+Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.11/dist-packages (from python-dateutil>=2.8.0->qiskit_ibm_runtime) (1.17.0)
+Requirement already satisfied: rustworkx>=0.15.0 in /usr/local/lib/python3.11/dist-packages (from qiskit>=1.4.1->qiskit_ibm_runtime) (0.16.0)
+Requirement already satisfied: scipy>=1.5 in /usr/local/lib/python3.11/dist-packages (from qiskit>=1.4.1->qiskit_ibm_runtime) (1.15.3)
+Requirement already satisfied: sympy>=1.3 in /usr/local/lib/python3.11/dist-packages (from qiskit>=1.4.1->qiskit_ibm_runtime) (1.13.1)
+Requirement already satisfied: dill>=0.3 in /usr/local/lib/python3.11/dist-packages (from qiskit>=1.4.1->qiskit_ibm_runtime) (0.3.7)
+Requirement already satisfied: stevedore>=3.0.0 in /usr/local/lib/python3.11/dist-packages (from qiskit>=1.4.1->qiskit_ibm_runtime) (5.4.1)
+Requirement already satisfied: symengine<0.14,>=0.11 in /usr/local/lib/python3.11/dist-packages (from qiskit>=1.4.1->qiskit_ibm_runtime) (0.13.0)
+Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.11/dist-packages (from requests>=2.19->qiskit_ibm_runtime) (3.4.2)
+Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.11/dist-packages (from requests>=2.19->qiskit_ibm_runtime) (3.10)
+Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.11/dist-packages (from requests>=2.19->qiskit_ibm_runtime) (2025.4.26)
+Requirement already satisfied: cryptography>=1.3 in /usr/local/lib/python3.11/dist-packages (from requests-ntlm>=1.1.0->qiskit_ibm_runtime) (43.0.3)
+Collecting pyspnego>=0.4.0 (from requests-ntlm>=1.1.0->qiskit_ibm_runtime)
+  Downloading pyspnego-0.11.2-py3-none-any.whl.metadata (5.4 kB)
+Requirement already satisfied: cffi>=1.12 in /usr/local/lib/python3.11/dist-packages (from cryptography>=1.3->requests-ntlm>=1.1.0->qiskit_ibm_runtime) (1.17.1)
+Requirement already satisfied: PyJWT<3.0.0,>=2.8.0 in /usr/local/lib/python3.11/dist-packages (from ibm_cloud_sdk_core<4.0.0,>=3.22.1->ibm-platform-services>=0.22.6->qiskit_ibm_runtime) (2.10.1)
+Requirement already satisfied: pbr>=2.0.0 in /usr/local/lib/python3.11/dist-packages (from stevedore>=3.0.0->qiskit>=1.4.1->qiskit_ibm_runtime) (6.1.1)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /usr/local/lib/python3.11/dist-packages (from sympy>=1.3->qiskit>=1.4.1->qiskit_ibm_runtime) (1.3.0)
+Requirement already satisfied: pycparser in /usr/local/lib/python3.11/dist-packages (from cffi>=1.12->cryptography>=1.3->requests-ntlm>=1.1.0->qiskit_ibm_runtime) (2.22)
+Requirement already satisfied: setuptools in /usr/local/lib/python3.11/dist-packages (from pbr>=2.0.0->stevedore>=3.0.0->qiskit>=1.4.1->qiskit_ibm_runtime) (75.2.0)
+Downloading qiskit_ibm_runtime-0.39.0-py3-none-any.whl (3.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.2/3.2 MB 51.5 MB/s eta 0:00:00
+Downloading ibm_platform_services-0.66.0-py3-none-any.whl (363 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 363.9/363.9 kB 25.1 MB/s eta 0:00:00
+Downloading requests_ntlm-1.3.0-py3-none-any.whl (6.6 kB)
+Downloading ibm_cloud_sdk_core-3.23.0-py3-none-any.whl (69 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.5/69.5 kB 5.7 MB/s eta 0:00:00
+Downloading pyspnego-0.11.2-py3-none-any.whl (130 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 130.5/130.5 kB 11.1 MB/s eta 0:00:00
+Installing collected packages: ibm_cloud_sdk_core, pyspnego, ibm-platform-services, requests-ntlm, qiskit_ibm_runtime
+Successfully installed ibm-platform-services-0.66.0 ibm_cloud_sdk_core-3.23.0 pyspnego-0.11.2 qiskit_ibm_runtime-0.39.0 requests-ntlm-1.3.0
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import SparsePauliOp
+from qiskit.transpiler import generate_preset_pass_manager
+# from qiskit_ibm_runtime import EstimatorV2 as Estimator
+
+# Create a new circuit with two qubits
+qc = QuantumCircuit(2)
+
+# Add a Hadamard gate to qubit 0
+qc.h(0)
+
+# Perform a controlled-X gate on qubit 1, controlled by qubit 0
+qc.cx(0, 1)
+
+# Return a drawing of the circuit using MatPlotLib ("mpl").
+# These guides are written by using Jupyter notebooks, which
+# display the output of the last line of each cell.
+# If you're running this in a script, use `print(qc.draw())` to
+# print a text drawing.
+qc.draw("mpl")
+
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import Operator
+
+qc = QuantumCircuit(1)
+qc.h(0)
+
+# Print the unitary matrix of the circuit
+print("Hadamard matrix:\n", Operator(qc).data)
+Hadamard matrix:
+ [[ 0.70710678+0.j  0.70710678+0.j]
+ [ 0.70710678+0.j -0.70710678+0.j]]
+import numpy as np
+
+H = np.array([[1, 1],
+              [1, -1]]) / np.sqrt(2)
+
+zero = np.array([1,0])
+state = H @ zero   # H|0>
+
+print("Statevector:", state)
+
+# Probabilities = |amplitude|^2
+probs = np.abs(state)**2
+print("Magnitudes (probabilities):", probs)
+Statevector: [0.70710678 0.70710678]
+Magnitudes (probabilities): [0.5 0.5]
+import numpy as np
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import Statevector
+
+# Example: sum value from Verilog
+sum_value = 2516154446
+max_value = 4286639746   # scale factor (choose based on your design)
+
+# Normalize into amplitude
+a = sum_value / max_value
+b = np.sqrt(1 - a**2)   # ensure normalization
+
+# Build statevector
+state = np.array([a, b])
+
+print("Input statevector:", state)
+
+# Apply Hadamard
+H = np.array([[1, 1],
+              [1, -1]]) / np.sqrt(2)
+
+output = H @ state
+print("After Hadamard:", output)
+print("Probabilities:", np.abs(output)**2)
+Input statevector: [0.58697595 0.80960437]
+After Hadamard: [ 0.98753141 -0.15742206]
+Probabilities: [0.97521829 0.02478171]
+import numpy as np
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import Statevector
+
+# Example: sum value from Verilog
+sum_value = 1024986496
+max_value = 4286639746   # scale factor (choose based on your design)
+
+# Normalize into amplitude
+a = sum_value / max_value
+b = np.sqrt(1 - a**2)   # ensure normalization
+
+# Build statevector
+state = np.array([a, b])
+
+print("Input statevector:", state)
+
+# Apply Hadamard
+H = np.array([[1, 1],
+              [1, -1]]) / np.sqrt(2)
+
+output = H @ state
+print("After Hadamard:", output)
+print("Probabilities:", np.abs(output)**2)
+Input statevector: [0.23911188 0.97099202]
+After Hadamard: [ 0.85567268 -0.51751741]
+Probabilities: [0.73217573 0.26782427]
+import re
+
+sum_values = []
+# Updated pattern based on the content of sum.txt.
+# This pattern looks for lines starting with "Time=", followed by numbers and ", sum=",
+# and then captures the number that follows.
+pat = re.compile(r'^Time=\d+, sum=(\d+)')
+
+infile = '/content/sum.txt' # Define the input file
+
+with open(infile, 'r', encoding='utf-8', errors='ignore') as f:
+    for line in f:
+        m = pat.search(line)
+        if m:
+            val = int(m.group(1))
+            sum_values.append(val)
+
+print(f"Found {len(sum_values)} sums.")
+print("First few:", sum_values[:5])
+Found 108960 sums.
+First few: [1024986496, 688428800, 2179547136, 3406420224, 622776576]
+import numpy as np
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import Statevector
+
+# Assuming max_value is defined from a previous cell or needs to be set here
+# max_value = 4286639746 # Uncomment and set this if not already defined
+
+print(f"Processing {len(sum_values)} extracted sums:")
+
+# Apply Hadamard to each sum value
+for i, sum_value in enumerate(sum_values):
+    # Normalize into amplitude
+    if max_value == 0:
+        print(f"Skipping sum_value {sum_value} at index {i} due to max_value being 0.")
+        continue
+
+    a = sum_value / max_value
+    # Ensure a is within the valid range [-1, 1] for normalization
+    if not -1 <= a <= 1:
+        print(f"Skipping sum_value {sum_value} at index {i} due to invalid normalized amplitude: {a}")
+        continue
+
+    b = np.sqrt(1 - a**2)   # ensure normalization
+
+    # Build statevector
+    state = np.array([a, b])
+
+    print(f"\nSum {i+1}: {sum_value}")
+    print("  Input statevector:", state)
+
+    # Apply Hadamard
+    H = np.array([[1, 1],
+                  [1, -1]]) / np.sqrt(2)
+
+    output = H @ state
+    print("  After Hadamard:", output)
+    print("  Probabilities:", np.abs(output)**2)
+Processing 0 extracted sums:
+import numpy as np
+import re
+
+# ===== Step 1: Upload your clean file =====
+from google.colab import files
+uploaded = files.upload()
+infile = list(uploaded.keys())[0]
+
+# ===== Step 2: Read all sums =====
+sum_values = []
+with open(infile, "r") as f:
+    for line in f:
+        m = re.search(r'sum\s*=\s*([0-9]+)', line)
+        if m:
+            sum_values.append(int(m.group(1)))
+
+print(f"Loaded {len(sum_values)} sum values.")
+print("First few:", sum_values[:5])
+
+# ===== Step 3: Define Hadamard =====
+H = np.array([[1, 1],
+              [1, -1]]) / np.sqrt(2)
+
+# Choose normalization strategy
+max_value = float(max(sum_values))  # scale relative to max in file
+print("Normalization max_value =", max_value)
+
+def to_amplitudes(val, max_val):
+    a = val / max_val
+    a = max(-1.0, min(1.0, a))   # clamp to [-1, 1]
+    b = np.sqrt(max(0.0, 1 - a*a))
+    return np.array([a, b])
+
+# ===== Step 4: Process each sum =====
+results = []
+for idx, sv in enumerate(sum_values):
+    state_in = to_amplitudes(sv, max_value)
+    state_out = H @ state_in
+    probs = np.abs(state_out)**2
+    results.append((idx, sv, state_in[0], state_in[1],
+                    state_out[0], state_out[1], probs[0], probs[1]))
+
+print("Example result:", results[0])
+
+# ===== Step 5: Save results to file =====
+outname = "hadamard_outputs.txt"
+with open(outname, "w") as f:
+    for r in results:
+        f.write(f"Index: {r[0]}, Sum={r[1]}\n")
+        f.write(f" Input state: [a={r[2]:.6f}, b={r[3]:.6f}]\n")
+        f.write(f" Output state: [out0={r[4]:.6f}, out1={r[5]:.6f}]\n")
+        f.write(f" Probabilities: [p0={r[6]:.6f}, p1={r[7]:.6f}]\n")
+        f.write("-" * 50 + "\n")
+
+print("Saved results to", outname)
+files.download(outname)
+Upload widget is only available when the cell has been executed in the current browser session. Please rerun this cell to enable.
+Saving sum_only.txt to sum_only (1).txt
+Loaded 108960 sum values.
+First few: [1024986496, 688428800, 2179547136, 3406420224, 622776576]
+Normalization max_value = 4294952064.0
+Example result: (0, 1024986496, np.float64(0.23864911196363936), np.float64(0.971105865165568), np.float64(0.855425947902239), np.float64(-0.5179251371149651), np.float64(0.7317535523444442), np.float64(0.26824644765555544))
+Saved results to hadamard_outputs.txt
